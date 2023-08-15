@@ -1,4 +1,5 @@
 import { test, expect} from '@playwright/test'
+import {loadHomePage, assertTitle } from '../helpers'
 
 test('Simple basic test', async({page})  => {
     //here goes the test code
@@ -8,7 +9,7 @@ test('Simple basic test', async({page})  => {
 })
 
 
-test.describe.only('My first test suite', () => { 
+test.describe('My first test suite', () => { 
 test('Clickin on Elements',async ({page}) => {
     await page.goto('http://zero.webappsecurity.com/')
     await page.click('#signin_button')
@@ -66,16 +67,25 @@ test('assertions @myTag',async ({ page}) => {
 })
 })
 
-test('screenshots',async ({ page}) => {
+test.describe('hooks',() =>  {
+test.beforeEach(async ({ page}) => {
     await page.goto('https://www.example.com')
+
+})
+
+test('screenshots',async ({ page}) => {
     await page.screenshot({ path: 'screenshot.png', fullPage: true})
     
 })
 
 
-test.only('single element screenshot',async ({ page}) => {
-    await page.goto('https://www.example.com')
+test('single element screenshot',async ({ page}) => {
     const element = await page.$('h1')
     await element.screenshot({ path: 'singleElementScreenshot.png'})
     
+})
+})
+test.only('Custom helpers',async ({ page}) => {
+    await loadHomePage(page)
+    await assertTitle(page)
 })
