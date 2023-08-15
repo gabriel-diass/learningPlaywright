@@ -67,7 +67,7 @@ test('assertions @myTag',async ({ page}) => {
 })
 })
 
-test.describe('hooks',() =>  {
+test.describe.parallel('hooks',() =>  {
 test.beforeEach(async ({ page}) => {
     await page.goto('https://www.example.com')
 
@@ -85,7 +85,8 @@ test('single element screenshot',async ({ page}) => {
     
 })
 })
-test.only('Custom helpers',async ({ page}) => {
+test('Custom helpers',async ({ page}) => {
     await loadHomePage(page)
+    // await page.pause()
     await assertTitle(page)
 })
