@@ -29,11 +29,5 @@ test.describe.only('currency exchange', ()=>{
 
         const alertMessage = page.locator('#alert_content')
         await expect(alertMessage).toContainText('Foreign currency cash was successfully purchased.')
-
-       
-
-        
-
-
     })
 })

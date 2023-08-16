@@ -21,6 +21,15 @@ test.describe('feedback form', ()=>{
 
     })
     //submit feedback form
+    test('submit feedback form',async ({ page}) => {
+        await page.type('#name', 'some name')
+        await page.type('#email', 'some email')
+        await page.type('#subject', 'some subject')
+        await page.type('#comment', 'some comment')
+        await page.click("input[type='submit']")
 
+        await page.waitForSelector( '#feedback-title')
+
+    })
 
 })
