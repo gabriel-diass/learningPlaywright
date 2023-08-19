@@ -1,22 +1,25 @@
 import { test, expect } from "@playwright/test";
 import { LoginPage } from "../../page-objects/LoginPage";
+import { HomePage } from "../../page-objects/HomePage";
 
-test.describe.only("login / logout flow", () => {
+test.describe("login / logout flow", () => {
   let loginPage: LoginPage;
+  let homePage: HomePage;
   //before hook
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
-    await loginPage.visit();
+    homePage = new HomePage(page);
+    await homePage.visit();
   });
   //Negative scenario
   test("negative scenario for login", async ({ page }) => {
-    await page.click("#signin_button");
+    await homePage.clickOnSignIn()
     await loginPage.login("invalid username", "invalid password");
     await loginPage.assertErrorMessage();
   });
   //positive scenario + logout
   test("positive scenario for login / logout", async ({ page }) => {
-    await page.click("#signin_button");
+    await homePage.clickOnSignIn()
     await loginPage.login("username", "password");
     await page.goto("http://zero.webappsecurity.com/bank/transfer-funds.html");
 

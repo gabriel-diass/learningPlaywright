@@ -1,35 +1,27 @@
-import { test, expect} from '@playwright/test'
+import { test, expect } from "@playwright/test";
+import { HomePage } from "../../page-objects/HomePage";
+import { FeedbackPage } from "../../page-objects/FeedbackPage";
 
-test.describe('feedback form', ()=>{
-    test.beforeEach(async ({ page}) => {
-        await page.goto('http://zero.webappsecurity.com/')
-        await page.click('#feedback')
-    })
+test.describe("feedback form", () => {
+  let homePage: HomePage;
+  let feedbackPage: FeedbackPage;
 
-    //reset feedback form
-    test('reset feedback form',async ({ page}) => {
-        await page.type('#name', 'some name')
-        await page.type('#email', 'some email')
-        await page.type('#subject', 'some subject')
-        await page.type('#comment', 'some comment')
-        await page.click("input[name='clear']")
+  test.beforeEach(async ({ page }) => {
+    homePage = new HomePage(page);
+    feedbackPage = new FeedbackPage(page);
+    await homePage.visit();
+    await homePage.clickOnFeedbackLink();
+  });
 
-        const nameInput = await page.locator('#name')
-        const commentInput = await page.locator('#comment')
-        await expect(nameInput).toBeEmpty()
-        await expect(commentInput).toBeEmpty()
-
-    })
-    //submit feedback form
-    test('submit feedback form',async ({ page}) => {
-        await page.type('#name', 'some name')
-        await page.type('#email', 'some email')
-        await page.type('#subject', 'some subject')
-        await page.type('#comment', 'some comment')
-        await page.click("input[type='submit']")
-
-        await page.waitForSelector( '#feedback-title')
-
-    })
-
-})
+  //reset feedback form
+  test("reset feedback form", async ({ page }) => {
+    await feedbackPage.fillForm("name", "email", "subject", "message");
+    await feedbackPage.clearForm();
+    await feedbackPage.assertReset();
+  });
+  //submit feedback form
+  test("submit feedback form", async ({ page }) => {
+    await feedbackPage.fillForm("name", "email", "subject", "message");
+    await feedbackPage.feedbackFormSent();
+  });
+});
