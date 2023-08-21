@@ -14,14 +14,13 @@ test.describe("login / logout flow", () => {
   //Negative scenario
   test("negative scenario for login", async ({ page }) => {
     await homePage.clickOnSignIn()
-    await loginPage.login("invalid username", "invalid password");
+    await loginPage.loginNegative("invalid username", "invalid password");
     await loginPage.assertErrorMessage();
   });
   //positive scenario + logout
   test("positive scenario for login / logout", async ({ page }) => {
     await homePage.clickOnSignIn()
     await loginPage.login("username", "password");
-    await page.goto("http://zero.webappsecurity.com/bank/transfer-funds.html");
 
     const accountSummaryTab = await page.locator("#account_summary_tab");
     await expect(accountSummaryTab).toBeVisible();

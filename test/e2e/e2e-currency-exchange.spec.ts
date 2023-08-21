@@ -1,13 +1,18 @@
 import { test, expect } from "@playwright/test";
+import { LoginPage } from "../../page-objects/LoginPage";
+import { HomePage } from "../../page-objects/HomePage";
 
 test.describe("currency exchange", () => {
+  let homePage: HomePage;
+  let loginPage: LoginPage;
+
   test.beforeEach(async ({ page }) => {
-    await page.goto("http://zero.webappsecurity.com/");
-    await page.click("#signin_button");
-    await page.type("#user_login", "username");
-    await page.type("#user_password", "password");
-    await page.click("text=Sign in");
-    await page.goto("http://zero.webappsecurity.com/bank/transfer-funds.html");
+    homePage = new HomePage(page);
+    loginPage = new LoginPage(page);
+
+    homePage.visit();
+    homePage.clickOnSignIn();
+    loginPage.login("username", "password");
   });
 
   test("exchange currency", async ({ page }) => {

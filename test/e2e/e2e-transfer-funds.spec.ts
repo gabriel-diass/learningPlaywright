@@ -1,15 +1,19 @@
 import { test, expect } from '@playwright/test'
+import { LoginPage } from "../../page-objects/LoginPage";
+import { HomePage } from "../../page-objects/HomePage";
 
 test.describe('transfer funds and make payments', ()=>{
-    test.beforeEach(async ({ page}) => {
-        await page.goto('http://zero.webappsecurity.com/')
-        await page.click('#signin_button')
-        await page.type('#user_login', 'username')
-        await page.type('#user_password', 'password')
-        await page.click('text=Sign in')
-        await page.goto('http://zero.webappsecurity.com/bank/transfer-funds.html')
-
-    })
+    let homePage: HomePage;
+    let loginPage: LoginPage;
+  
+    test.beforeEach(async ({ page }) => {
+      homePage = new HomePage(page);
+      loginPage = new LoginPage(page);
+  
+      homePage.visit();
+      homePage.clickOnSignIn();
+      loginPage.login("username", "password");
+    });
   
     test('transfer funds',async ({ page}) => {
         await page.click('#transfer_funds_tab')
